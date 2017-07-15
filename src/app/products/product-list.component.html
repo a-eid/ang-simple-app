@@ -1,0 +1,56 @@
+<div class="panel panel-primary">
+  <div class="panel-heading" innerText={{getTitle()}}>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-2">
+        <h3>Filter By: </h3>
+      </div>
+      <div class="col-md-4">
+        <input autofocus type="text" [(ngModel)]='listFilter'>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6" *ngIf="listFilter && listFilter.length" >
+        <h3>Filtered By: {{listFilter}} </h3>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table" *ngIf="products && products.length">
+        <thead>
+          <tr>
+            <th>
+              <button class="btn btn-primary" (click)='toggleImages()'>
+               {{buttonText | uppercase }} 
+              </button>
+            </th>
+            <th>product</th>
+            <th>Code</th>
+            <th>Available</th>
+            <th>Price</th>
+            <th>5 Start Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- () makes it clear what is happening for me personally   -->
+          <tr *ngFor="let product of (products | productFilter:listFilter)">
+            <td>
+              <img [src]='product.imageUrl' [title]='product.productName' alt='{{product.productName}} image' [style.width.px]='imageWidth'
+                [style.margin.px]='imageMargin' *ngIf="showImages">
+            </td>
+            <td>{{product.productName}}</td>
+            <td>{{product.productCode}}</td>
+            <td>{{product.releaseDate}}</td>
+            <td>{{product.price | currency:'USD':true:'1.2-2' | lowercase}}</td>
+            <!-- <td>{{product.starRating}}</td> -->
+            <td>
+              <ai-star 
+                [rating]="product.starRating"
+                (ratingClicked)= "onRatingClicked($event)" >loading...</ai-star>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
